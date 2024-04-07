@@ -32,11 +32,12 @@ class CellBoard {
 
     update() {
 
-        this.speed = 50;
+        this.speed = parseInt(document.getElementById('speed').value, 10);
 
-        if (this.tickCount++ >= this.speed && this.speed !== 120) {
+        if (this.tickCount++ >= this.speed && this.speed !== 150) {
             this.tickCount = 0;
             this.ticks++;
+            document.getElementById('ticks').innerHTML = "Ticks: " + this.ticks;
 
             let nextBoard = this.newBoard();
 
@@ -94,8 +95,9 @@ class CellBoard {
         ctx.fillStyle = "Black";
         for (let col = 1; col < this.width-1; col++) {
             for (let row = 1; row < this.height-1; row++) {
-                let cell = this.board[col][row];
-                if (cell === 1) ctx.fillRect(col * size + gap, row * size + gap, size - 2 * gap, size - 2 * gap);
+                if (this.board[col][row] === 1){
+                    ctx.fillRect(col * size + gap, row * size + gap, size - 2 * gap, size - 2 * gap);
+                }
             }
         }
     }

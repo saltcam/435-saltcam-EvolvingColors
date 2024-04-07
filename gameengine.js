@@ -25,7 +25,7 @@ class GameEngine {
         this.ctx = ctx;
         this.startInput();
         this.timer = new Timer();
-        this.addEntity(new CellBoard(this, 100, 100));
+        this.addEntity(new CellBoard(this, 150, 100));
     };
 
     start() {
