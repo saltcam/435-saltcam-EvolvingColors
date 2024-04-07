@@ -85,7 +85,7 @@ class CellBoard {
         //     alive = 0;
         // }
 
-        console.log("aliveNeighbors: " + aliveNeighbors + ", " + alive);
+        // console.log("aliveNeighbors: " + aliveNeighbors + ", " + alive);
 
         return alive;
     }
@@ -96,6 +96,8 @@ class CellBoard {
         for (let col = 1; col < this.width-1; col++) {
             for (let row = 1; row < this.height-1; row++) {
                 if (this.board[col][row] === 1){
+                    // ctx.arc(col * size + gap, row * size + gap, size - 2 * gap, 0, 2 * Math.PI);
+                    // ctx.stroke();
                     ctx.fillRect(col * size + gap, row * size + gap, size - 2 * gap, size - 2 * gap);
                 }
             }
