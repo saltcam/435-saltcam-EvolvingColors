@@ -25,6 +25,7 @@ class GameEngine {
         this.ctx = ctx;
         this.startInput();
         this.timer = new Timer();
+        this.addEntity(new CellBoard(this, 100, 100));
     };
 
     start() {
@@ -112,8 +113,8 @@ class GameEngine {
         this.clockTick = this.timer.tick();
         this.update();
         this.draw();
-    };
+    }
 
-};
+}
 
 // KV Le was here :)
