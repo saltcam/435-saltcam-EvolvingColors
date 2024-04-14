@@ -27,7 +27,6 @@ class GameEngine {
         this.ctx = ctx;
         this.startInput();
         this.timer = new Timer();
-        this.addEntity(new CellBoard(this, 175, 100));
     };
 
     start() {
@@ -95,6 +94,10 @@ class GameEngine {
         for (let i = this.entities.length - 1; i >= 0; i--) {
             this.entities[i].draw(this.ctx, this);
         }
+        // Draw latest things first
+        for (let i = this.plants.length - 1; i >= 0; i--) {
+            this.plants[i].draw(this.ctx, this);
+        }
     };
 
     update() {
@@ -138,34 +141,49 @@ class GameEngine {
     }
 
     checkAdjacents(originalX, originalY){
-        let UP = true;
-        let upDir = {x: originalX, y: originalY + 1};
-        let LEFT = true;
-        let leftDir= {x: originalX - 1, y: originalY};
-        let RIGHT = true;
-        let rightDir= {x: originalX + 1, y: originalY};
-        let DOWN = true;
-        let downDir= {x: originalX, y: originalY - 1};
+
+        const upDir= this.screenWrap(originalX, originalY + 1);
+        // let UP = true;
+        const leftDir= this.screenWrap(originalX - 1, originalY);
+        // let LEFT = true;
+        const rightDir= this.screenWrap(originalX + 1, originalY);
+        // let RIGHT = true;
+        const downDir= this.screenWrap(originalX, originalY - 1);
+        // let DOWN = true;
+        let validCoords =[
+            {x: upDir.x, y: upDir.y},
+            {x: leftDir.x, y: leftDir.y},
+            {x: rightDir.x, y: rightDir.y},
+            {x: downDir.x, y: downDir.y}];
+
+        let validDirs = [true, true, true, true];
 
         for (let i = 0; i < this.plants.length; i++) {
-
+            if (this.plants.x === upDir.x && this.plants.y === upDir.y) {
+                validDirs[0] = false;
+            }
+            if (this.plants.x === leftDir.x && this.plants.y === leftDir.y) {
+                validDirs[1] = false;
+            }
+            if (this.plants.x === rightDir.x && this.plants.y === rightDir.y) {
+                validDirs[2] = false;
+            }
+            if (this.plants.x === downDir.x && this.plants.y === downDir.y) {
+                validDirs[3] = false;
+            }
         }
 
-        let list = [[1,2],[1,3]];
+        for (let i = validDirs.length-1; i > 0; i--) {
+            if (!validDirs[i]) {    // if not a valid direction, remove the set of coords that correspond to it.
+                validCoords.splice(i, 1);
+            }
+        }
 
-        return list;
+        return validCoords;
     }
 
     screenWrap(tarX, tarY) {
-        let newX = 0;
-        let newY = 0;
-
-        // if x goes too far left or right, give the border + the difference
-        if () {
-
-        }
-
-        return {x: newX, y: newY};
+        return {x: (tarX + PARAMS.dimension) % PARAMS.dimension, y: (tarY + PARAMS.dimension) % PARAMS.dimension};
     }
 
 }
