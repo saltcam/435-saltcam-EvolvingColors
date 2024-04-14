@@ -1,5 +1,9 @@
 /** Global Parameters Object */
-const params = { };
+const PARAMS = {
+    plantGrowth : 10
+
+
+};
 
 /**
  * @param {Number} n

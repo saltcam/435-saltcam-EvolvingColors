@@ -9,6 +9,8 @@ class GameEngine {
         // Everything that will be updated and drawn each frame
         this.entities = [];
 
+        this.plants = [];
+
         // Information on the input
         this.click = null;
         this.mouse = null;
@@ -81,6 +83,10 @@ class GameEngine {
         this.entities.push(entity);
     };
 
+    addPlant(plant) {
+        this.plants.push(plant);
+    }
+
     draw() {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
@@ -107,6 +113,22 @@ class GameEngine {
                 this.entities.splice(i, 1);
             }
         }
+
+        let plantCount = this.plants.length;
+
+        for (let i = 0; i < plantCount; i++) {
+            let plant = this.plants[i];
+
+            if (!plant.removeFromWorld) {
+                plant.update();
+            }
+        }
+
+        for (let i = this.plants.length - 1; i >= 0; --i) {
+            if (this.plants[i].removeFromWorld) {
+                this.plants.splice(i, 1);
+            }
+        }
     };
 
     loop() {
@@ -115,6 +137,35 @@ class GameEngine {
         this.draw();
     }
 
-}
+    checkAdjacents(originalX, originalY){
+        let UP = true;
+        let upDir = {x: originalX, y: originalY + 1};
+        let LEFT = true;
+        let leftDir= {x: originalX - 1, y: originalY};
+        let RIGHT = true;
+        let rightDir= {x: originalX + 1, y: originalY};
+        let DOWN = true;
+        let downDir= {x: originalX, y: originalY - 1};
 
-// KV Le was here :)
+        for (let i = 0; i < this.plants.length; i++) {
+
+        }
+
+        let list = [[1,2],[1,3]];
+
+        return list;
+    }
+
+    screenWrap(tarX, tarY) {
+        let newX = 0;
+        let newY = 0;
+
+        // if x goes too far left or right, give the border + the difference
+        if () {
+
+        }
+
+        return {x: newX, y: newY};
+    }
+
+}

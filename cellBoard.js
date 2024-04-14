@@ -1,10 +1,10 @@
 class CellBoard {
     constructor(game, width, height) {
         this.game = game;
-        this.width = width+1;
-        this.height = height+1;
+        this.width = width;
+        this.height = height;
         this.board = this.newBoard();
-        this.randomizeBoard();
+        // this.randomizeBoard();
         this.ticks = 0;
         this.tickCount = 0;
         this.removeFromWorld = false;
