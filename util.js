@@ -1,7 +1,7 @@
 /** Global Parameters Object */
 const PARAMS = {
-    plantGrowth : 120,
-    dimension: 100
+    plantGrowth : 10,
+    dimension: 50
 
 };
 

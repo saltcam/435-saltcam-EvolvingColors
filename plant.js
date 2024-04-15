@@ -23,7 +23,7 @@ class Plant {
             //new Plant(this.game, validAdjacents[rand].x, validAdjacents[rand].y, this.mutate())
             let newCoords = this.game.screenWrap(x - 1 + randomInt(3), y - 1 + randomInt(3));
             this.game.addPlant(newCoords.x,newCoords.y, this.mutate());
-
+            this.age -= 10;
         }
 
     }
@@ -46,7 +46,7 @@ class Plant {
         // if (newGene < 0) {
         //     newGene = 0;
         // }
-        return (this.gene + (Math.floor(Math.random() * 51) - 25) + 360) % 360;
+        return (this.gene + (Math.floor(Math.random() * 11) - 5) + 360) % 360;
     }
 
     // draw(ctx, game) {

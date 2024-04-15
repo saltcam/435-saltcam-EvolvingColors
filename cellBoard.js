@@ -28,9 +28,8 @@ class CellBoard {
             document.getElementById('ticks').innerHTML = "Ticks: " + this.ticks;
 
             for (let i = 0; i < this.dimension; i++) {
-                for (let j = 1; j < this.dimension; j++) {
+                for (let j = 0; j < this.dimension; j++) {
                     if (this.board[i][j]) {
-                        console.log("UPDATING!");
                         this.board[i][j].update(i, j);
                         if(Math.random() < 0.001) this.board[i][j] = null;
                     }
@@ -83,10 +82,9 @@ class CellBoard {
             for (let j = 0; j < this.dimension; j++) {
                 let plant = this.board[i][j];
                 if (plant) {
-                    console.log("X: " + plant.x + "; Y: " + plant.y);
                     let size = 8;
                     // let gap = 1;
-                    ctx.fillStyle = hsl(plant.gene,20 + plant.age,50);
+                    ctx.fillStyle = hsl(plant.gene,70 + plant.age,75);
                     ctx.fillRect(i * size, j * size, size - 2, size - 2);
                     // let size = 8;
                     // let gap = 1;
