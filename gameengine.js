@@ -16,6 +16,8 @@ class GameEngine {
         this.mouse = null;
         this.wheel = null;
         this.keys = {};
+        this.ticks = 0;
+        this.tickCount = 0;
 
         // Options and the Details
         this.options = options || {
@@ -44,7 +46,7 @@ class GameEngine {
             x: e.clientX - this.ctx.canvas.getBoundingClientRect().left,
             y: e.clientY - this.ctx.canvas.getBoundingClientRect().top
         });
-        
+
         this.ctx.canvas.addEventListener("mousemove", e => {
             if (this.options.debugging) {
                 console.log("MOUSE_MOVE", getXandY(e));
@@ -95,15 +97,29 @@ class GameEngine {
             Math.floor(Math.random() * 360));
     }
 
+    addRandomAnimat(){
+        this.addEntity(new Animat(this,
+            Math.floor(Math.random() * PARAMS.dimension),
+            Math.floor(Math.random() * PARAMS.dimension),
+            Math.floor(Math.random() * 360)));
+    }
+
+    clearAll() {
+        this.cellBoard.board = this.cellBoard.newBoard();
+        this.entities = [this.entities[0]];
+    }
+
     draw() {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+
+        this.cellBoard.draw(this.ctx);
 
         // Draw latest things first
         for (let i = this.entities.length - 1; i >= 0; i--) {
             this.entities[i].draw(this.ctx, this);
         }
-        this.cellBoard.draw(this.ctx);
+
         // Draw latest things first
         // for (let i = this.plants.length - 1; i >= 0; i--) {
         //     this.plants[i].draw(this.ctx, this);
@@ -133,51 +149,18 @@ class GameEngine {
 
     loop() {
         this.clockTick = this.timer.tick();
-        this.update();
-        this.draw();
+        let speed = parseInt(document.getElementById('speed').value, 10);
+        if (this.tickCount++ >= speed && speed !== 150) {
+            this.tickCount = 0;
+            this.ticks++;
+            document.getElementById('ticks').innerHTML = "Ticks: " + this.ticks;
+
+
+            this.update();
+            this.draw();
+        }
     }
 
-    checkAdjacents(originalX, originalY){
-
-        const upDir= this.screenWrap(originalX, originalY + 1);
-        // let UP = true;
-        const leftDir= this.screenWrap(originalX - 1, originalY);
-        // let LEFT = true;
-        const rightDir= this.screenWrap(originalX + 1, originalY);
-        // let RIGHT = true;
-        const downDir= this.screenWrap(originalX, originalY - 1);
-        // let DOWN = true;
-        let validCoords =[
-            {x: upDir.x, y: upDir.y},
-            {x: leftDir.x, y: leftDir.y},
-            {x: rightDir.x, y: rightDir.y},
-            {x: downDir.x, y: downDir.y}];
-
-        let validDirs = [true, true, true, true];
-
-        for (let i = 0; i < this.plants.length; i++) {
-            if (this.plants.x === upDir.x && this.plants.y === upDir.y) {
-                validDirs[0] = false;
-            }
-            if (this.plants.x === leftDir.x && this.plants.y === leftDir.y) {
-                validDirs[1] = false;
-            }
-            if (this.plants.x === rightDir.x && this.plants.y === rightDir.y) {
-                validDirs[2] = false;
-            }
-            if (this.plants.x === downDir.x && this.plants.y === downDir.y) {
-                validDirs[3] = false;
-            }
-        }
-
-        for (let i = validDirs.length-1; i > 0; i--) {
-            if (!validDirs[i]) {    // if not a valid direction, remove the set of coords that correspond to it.
-                validCoords.splice(i, 1);
-            }
-        }
-
-        return validCoords;
-    }
 
     screenWrap(tarX, tarY) {
         return {x: (tarX + PARAMS.dimension) % PARAMS.dimension, y: (tarY + PARAMS.dimension) % PARAMS.dimension};

@@ -9,6 +9,12 @@ ASSET_MANAGER.downloadAll(() => {
 	document.getElementById("plant").addEventListener("click", () => {
 		gameEngine.addRandomPlant();
 	});
+	document.getElementById("animat").addEventListener("click", () => {
+		gameEngine.addRandomAnimat();
+	});
+	document.getElementById("clear").addEventListener("click", () => {
+		gameEngine.clearAll();
+	});
 
 	gameEngine.init(ctx);
 	gameEngine.start();

@@ -10,18 +10,32 @@
     <script type="text/javascript" src="./gameengine.js"></script>
     <script type="text/javascript" src="./util.js"></script>
     <script type="text/javascript" src="./plant.js"></script>
+    <script type="text/javascript" src="./animat.js"></script>
     <script type="text/javascript" src="./cellBoard.js"></script>
     <script type="text/javascript" src="./main.js"></script>
 </head>
 <body>
-    <canvas id="gameWorld" width="1400" height="806" style="background: white; border: 1px solid black" tabindex="0" autofocus></canvas>
+    <canvas id="gameWorld" width="650" height="650" style="background: white; border: 1px solid black" tabindex="0" autofocus></canvas>
     <div>
         <div id="ticks">Ticks: 0</div>
         <label for="speed">Fast</label>
         <input type="range" id="speed" min="1" max="150" value="50" step="1">
         <label for="speed">Slow</label>
 
+        <div class="slider-container">
+            <label for="plantgrowth">Plant Growth</label>
+            <input type="range" id="plantgrowth" min="1" max="80" value="20" class="slider">
+
+            <label for="animatgrowth">Animat Growth</label>
+            <input type="range" id="animatgrowth" min="1" max="80" value="4" class="slider">
+
+            <label for="animatselection">Animat Food Selectivity</label>
+            <input type="range" id="animatselection" min="-1" max="1" value="0" step="0.05" class="slider">
+        </div>
+
         <button type="button" id="plant" class="button">Add Plant</button>
+        <button type="button" id="animat" class="button">Add Animat</button>
+        <button type="button" id="clear" class="button">Clear All</button>
     </div>
 </body>
 </html>
