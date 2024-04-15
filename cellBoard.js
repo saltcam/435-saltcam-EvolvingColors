@@ -1,8 +1,7 @@
 class CellBoard {
-    constructor(game, width, height) {
+    constructor(game, dimension) {
         this.game = game;
-        this.width = width;
-        this.height = height;
+        this.dimension = dimension;
         this.board = this.newBoard();
         // this.randomizeBoard();
         this.ticks = 0;
@@ -12,23 +11,12 @@ class CellBoard {
 
     newBoard() {
         let newBoard = [];
-        for (let i = 0; i < this.width; i++) {
+        for (let i = 0; i < this.dimension; i++) {
             newBoard.push([]);    // makes a new array for this slot
-            for (let j = 0; j < this.height; j++) {
-                newBoard[i][j] = 0;   // fill with dead cells (really cool game by the way)
-            }
         }
-
         return newBoard;
     }
 
-    randomizeBoard() {
-        for (let i = 1; i < this.width-1; i++) {
-            for (let j = 1; j < this.height-1; j++) {
-                this.board[i][j] = randomInt(2);    // 1 = alive, 0 = dead;
-            }
-        }
-    }
 
     update() {
 
@@ -39,15 +27,15 @@ class CellBoard {
             this.ticks++;
             document.getElementById('ticks').innerHTML = "Ticks: " + this.ticks;
 
-            let nextBoard = this.newBoard();
-
-            for (let i = 1; i < this.width - 1; i++) {
-                for (let j = 1; j < this.height - 1; j++) {
-                    nextBoard[i][j] = this.checkSurround(i, j);
+            for (let i = 0; i < this.dimension; i++) {
+                for (let j = 1; j < this.dimension; j++) {
+                    if (this.board[i][j]) {
+                        console.log("UPDATING!");
+                        this.board[i][j].update(i, j);
+                        if(Math.random() < 0.001) this.board[i][j] = null;
+                    }
                 }
             }
-
-            this.board = nextBoard;
         }
     }
 
@@ -90,17 +78,31 @@ class CellBoard {
         return alive;
     }
     draw(ctx) {
-        let size = 8;
-        let gap = 1;
-        ctx.fillStyle = "Black";
-        for (let col = 1; col < this.width-1; col++) {
-            for (let row = 1; row < this.height-1; row++) {
-                if (this.board[col][row] === 1){
-                    // ctx.arc(col * size + gap, row * size + gap, size - 2 * gap, 0, 2 * Math.PI);
-                    // ctx.stroke();
-                    ctx.fillRect(col * size + gap, row * size + gap, size - 2 * gap, size - 2 * gap);
+
+        for (let i = 0; i < this.dimension; i++) {
+            for (let j = 0; j < this.dimension; j++) {
+                let plant = this.board[i][j];
+                if (plant) {
+                    console.log("X: " + plant.x + "; Y: " + plant.y);
+                    let size = 8;
+                    // let gap = 1;
+                    ctx.fillStyle = hsl(plant.gene,20 + plant.age,50);
+                    ctx.fillRect(i * size, j * size, size - 2, size - 2);
+                    // let size = 8;
+                    // let gap = 1;
+                    // ctx.fillStyle = "Black";
+                    // for (let col = 1; col < this.width-1; col++) {
+                    //     for (let row = 1; row < this.height-1; row++) {
+                    //         if (this.board[col][row] === 1){
+                    //             // ctx.arc(col * size + gap, row * size + gap, size - 2 * gap, 0, 2 * Math.PI);
+                    //             // ctx.stroke();
+                    //             ctx.fillRect(col * size + gap, row * size + gap, size - 2 * gap, size - 2 * gap);
+                    //         }
+                    //     }
+                    // }
                 }
             }
         }
+
     }
 }

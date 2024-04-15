@@ -9,7 +9,7 @@ class GameEngine {
         // Everything that will be updated and drawn each frame
         this.entities = [];
 
-        this.plants = [];
+        this.cellBoard = new CellBoard(this, PARAMS.dimension);
 
         // Information on the input
         this.click = null;
@@ -27,6 +27,7 @@ class GameEngine {
         this.ctx = ctx;
         this.startInput();
         this.timer = new Timer();
+        // this.addEntity(new CellBoard(this, PARAMS.dimension));
     };
 
     start() {
@@ -82,8 +83,16 @@ class GameEngine {
         this.entities.push(entity);
     };
 
-    addPlant(plant) {
-        this.plants.push(plant);
+    addPlant(x, y, hue) {
+        console.log("Planting");
+        this.cellBoard.board[x][y] = new Plant(this, hue);
+    }
+
+    addRandomPlant(){
+        this.addPlant(
+            Math.floor(Math.random() * PARAMS.dimension),
+            Math.floor(Math.random() * PARAMS.dimension),
+            Math.floor(Math.random() * 360));
     }
 
     draw() {
@@ -94,10 +103,11 @@ class GameEngine {
         for (let i = this.entities.length - 1; i >= 0; i--) {
             this.entities[i].draw(this.ctx, this);
         }
+        this.cellBoard.draw(this.ctx);
         // Draw latest things first
-        for (let i = this.plants.length - 1; i >= 0; i--) {
-            this.plants[i].draw(this.ctx, this);
-        }
+        // for (let i = this.plants.length - 1; i >= 0; i--) {
+        //     this.plants[i].draw(this.ctx, this);
+        // }
     };
 
     update() {
@@ -117,21 +127,8 @@ class GameEngine {
             }
         }
 
-        let plantCount = this.plants.length;
+        this.cellBoard.update();
 
-        for (let i = 0; i < plantCount; i++) {
-            let plant = this.plants[i];
-
-            if (!plant.removeFromWorld) {
-                plant.update();
-            }
-        }
-
-        for (let i = this.plants.length - 1; i >= 0; --i) {
-            if (this.plants[i].removeFromWorld) {
-                this.plants.splice(i, 1);
-            }
-        }
     };
 
     loop() {
